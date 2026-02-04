@@ -1,0 +1,32 @@
+let admins = JSON.parse(localStorage.getItem('admins')) || [
+  {user:'lucose', pass:btoa('12345678')}
+];
+localStorage.setItem('admins', JSON.stringify(admins));
+
+let users = JSON.parse(localStorage.getItem('users')) || [];
+let usuarioAtual = null;
+let adminLogado = false;
+
+function login(){
+  const u = loginUser.value;
+  const p = btoa(loginPass.value);
+
+  if(admins.find(a=>a.user===u && a.pass===p)){
+    adminLogado = true;
+    usuarioAtual = u;
+    abrirPainel();
+    return;
+  }
+
+  if(users.find(x=>x.user===u && x.pass===p)){
+    usuarioAtual = u;
+    abrirPainel();
+    return;
+  }
+
+  alert('Login inválido');
+}
+
+function logout(){
+  location.reload();
+}

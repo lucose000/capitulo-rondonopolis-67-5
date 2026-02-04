@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capítulo Rondonópolis 67°</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+<header>
+  <img src="assets/img/brasao.png">
+  <h1>Capítulo Rondonópolis 67°</h1>
+  <p>Plataforma institucional</p>
+</header>
+
+<nav>
+  <a href="#quem">Quem Somos</a>
+  <a href="#login">Login</a>
+  <a href="#painel">Painel</a>
+  <a href="#contato">Contato</a>
+</nav>
+
+<section id="quem" class="container">
+  <h2>Quem Somos</h2>
+  <p>Site em desenvolvimento para aprendizado. Se tiver ideias, chama no contato 👇</p>
+</section>
+
+<section id="login" class="container">
+  <h2>Login</h2>
+  <input id="loginUser" placeholder="Usuário">
+  <input id="loginPass" type="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+</section>
+
+<section id="painel" class="container hidden">
+  <h2>Painel</h2>
+  <p id="bemVindo"></p>
+
+  <div id="adminArea" class="hidden">
+    <h3>Criar Usuário</h3>
+    <input id="novoUser">
+    <input id="novoUserPass" type="password">
+    <button onclick="criarUsuario()">Criar</button>
+  </div>
+
+  <h3>Arquivos</h3>
+  <input type="file" id="arquivoInput">
+  <button onclick="enviarArquivo()">Enviar</button>
+  <ul id="listaArquivos"></ul>
+
+  <button onclick="logout()">Sair</button>
+</section>
+
+<section id="contato" class="container">
+  <h2>Contato</h2>
+  <p>📞 +55 (66) 99249-3547</p>
+  <p>📧 felipelramosdasilva@gmail.com</p>
+</section>
+
+<footer>
+  © 2025 - Capítulo Rondonópolis 67°
+</footer>
+
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/admin.js"></script>
+<script src="assets/js/arquivos.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+capitulo-rondonopolis-67/
+│
+├── index.html
+│
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── js/
+│   │   ├── auth.js
+│   │   ├── admin.js
+│   │   ├── arquivos.js
+│   │   └── main.js
+│   │
+│   └── img/
+│       └── brasao.png
+│
+└── README.md

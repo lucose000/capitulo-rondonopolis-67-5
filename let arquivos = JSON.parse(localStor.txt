@@ -1,0 +1,52 @@
+let arquivos = JSON.parse(localStorage.getItem('arquivos')) || [];
+
+function enviarArquivo(){
+  if(!adminLogado) return alert('Somente admin');
+
+  const file = arquivoInput.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    arquivos.push({nome:file.name, conteudo:e.target.result});
+    localStorage.setItem('arquivos', JSON.stringify(arquivos));
+    atualizarArquivos();
+  };
+  reader.readAsDataURL(file);
+}
+
+function atualizarArquivos(){
+  listaArquivos.innerHTML='';
+  arquivos.forEach((a,i)=>{
+    const li=document.createElement('li');
+    li.innerText=a.nome+' ';
+
+    const b=document.createElement('button');
+    b.innerText='⬇️';
+    b.onclick=()=>baixarArquivo(i);
+    li.appendChild(b);
+
+    if(adminLogado){
+      const e=document.createElement('button');
+      e.innerText='🗑️';
+      e.onclick=()=>excluirArquivo(i);
+      li.appendChild(e);
+    }
+    listaArquivos.appendChild(li);
+  });
+}
+
+function baixarArquivo(i){
+  const a=document.createElement('a');
+  a.href=arquivos[i].conteudo;
+  a.download=arquivos[i].nome;
+  a.click();
+}
+
+function excluirArquivo(i){
+  if(confirm('Excluir?')){
+    arquivos.splice(i,1);
+    localStorage.setItem('arquivos',JSON.stringify(arquivos));
+    atualizarArquivos();
+  }
+}

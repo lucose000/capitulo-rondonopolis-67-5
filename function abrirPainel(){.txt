@@ -1,0 +1,7 @@
+function abrirPainel(){
+  login.classList.add('hidden');
+  painel.classList.remove('hidden');
+  bemVindo.innerText = 'Bem-vindo, ' + usuarioAtual;
+  if(adminLogado) adminArea.classList.remove('hidden');
+  atualizarArquivos();
+}
