@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capítulo Rondonópolis 67°</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#b00000}
+header{background:#b00000;color:#fff;padding:20px;text-align:center}
+nav{background:#8b0000;padding:10px;text-align:center}
+nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:bold}
+.container{max-width:1100px;margin:20px auto;padding:20px;background:#fff;border-radius:10px}
+.hidden{display:none}
+button{padding:8px 14px;border:none;border-radius:6px;background:#1e90ff;color:#fff;cursor:pointer}
+button:hover{background:#0f5fb3}
+input{padding:10px;width:100%;margin:5px 0}
+ul li{margin-bottom:10px}
+footer{background:#222;color:#fff;text-align:center;padding:15px;margin-top:30px}
+</style>
+</head>
+<body>
+
+<header>
+<img src="assets/img/brasao.png" style="max-width:160px;display:block;margin:0 auto 10px;">
+<h1>Capítulo Rondonópolis 67°</h1>
+<p>Plataforma institucional</p>
+</header>
+
+<nav>
+<a href="#quem">Quem Somos</a>
+<a href="#login">Login</a>
+<a href="#arquivos">Arquivos</a>
+<a href="#contato">Contato</a>
+</nav>
+
+<section class="container" id="quem">
+<h2>Quem Somos</h2>
+<p>Opa, tudo certo? 😄<br>
+Este é um site em desenvolvimento, criado para aprendizado. Podem existir erros.
+Se você tem alguma ideia ou sugestão, entre em contato!</p>
+</section>
+
+<section class="container" id="login">
+<h2>Login</h2>
+<input id="loginUser" placeholder="Usuário">
+<input id="loginPass" type="password" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+</section>
+
+<section class="container hidden" id="painel">
+<h2>Painel</h2>
+<p id="bemVindo"></p>
+
+<div id="adminArea" class="hidden">
+<h3>Criar Administrador</h3>
+<input id="novoAdminUser" placeholder="Usuário">
+<input id="novoAdminPass" type="password" placeholder="Senha">
+<button onclick="criarAdmin()">Criar Admin</button>
+
+<h3>Criar Usuário</h3>
+<input id="novoUser" placeholder="Usuário">
+<input id="novoUserPass" type="password" placeholder="Senha">
+<button onclick="criarUsuario()">Criar Usuário</button>
+</div>
+
+<h3>Gerenciar Arquivos</h3>
+<input type="file" id="arquivoInput">
+<button onclick="enviarArquivo()">Enviar Arquivo</button>
+<ul id="listaArquivos"></ul>
+
+<button onclick="logout()">Sair</button>
+</section>
+
+<section class="container hidden" id="arquivos"></section>
+
+<section class="container" id="contato">
+<h2>Contato</h2>
+<p><b>WhatsApp:</b> +55 (66) 99249-3547</p>
+<p><b>Email:</b> felipelramosdasilva@gmail.com</p>
+</section>
+
+<footer>
+<p>© 2025 - Capítulo Rondonópolis 67°</p>
+</footer>
+
+<script>
+let admins = JSON.parse(localStorage.getItem('admins')) || [{user:'lucose',pass:btoa('12345678')}];
+localStorage.setItem('admins',JSON.stringify(admins));
+
+let users = JSON.parse(localStorage.getItem('users')) || [];
+let arquivos = JSON.parse(localStorage.getItem('arquivos')) || [];
+let usuarioAtual = null;
+let adminLogado = false;
+
+function login(){
+ const u=loginUser.value,p=btoa(loginPass.value);
+ const adm=admins.find(a=>a.user===u&&a.pass===p);
+ if(adm){adminLogado=true;usuarioAtual=u;abrirPainel();return}
+ const user=users.find(x=>x.user===u&&x.pass===p);
+ if(user){usuarioAtual=u;abrirPainel();return}
+ alert('Credenciais inválidas');
+}
+
+function abrirPainel(){
+ document.getElementById('login').classList.add('hidden');
+ document.getElementById('painel').classList.remove('hidden');
+ bemVindo.innerText='Bem-vindo, '+usuarioAtual;
+ if(adminLogado) adminArea.classList.remove('hidden');
+ atualizarArquivos();
+}
+
+function logout(){location.reload()}
+
+function criarAdmin(){
+ admins.push({user:novoAdminUser.value,pass:btoa(novoAdminPass.value)});
+ localStorage.setItem('admins',JSON.stringify(admins));
+ alert('Admin criado');
+}
+
+function criarUsuario(){
+ users.push({user:novoUser.value,pass:btoa(novoUserPass.value)});
+ localStorage.setItem('users',JSON.stringify(users));
+ alert('Usuário criado');
+}
+
+function enviarArquivo(){
+ if(!adminLogado) return alert('Somente admin');
+ const f=arquivoInput.files[0]; if(!f) return;
+ const r=new FileReader();
+ r.onload=e=>{arquivos.push({nome:f.name,conteudo:e.target.result});
+ localStorage.setItem('arquivos',JSON.stringify(arquivos)); atualizarArquivos();};
+ r.readAsDataURL(f);
+}
+
+function atualizarArquivos(){
+ listaArquivos.innerHTML='';
+ arquivos.forEach((a,i)=>{
+  const li=document.createElement('li');
+  li.innerText=a.nome+' ';
+  const b=document.createElement('button'); b.innerText='⬇️ Baixar';
+  b.onclick=()=>baixarArquivo(i); li.appendChild(b);
+  if(adminLogado){const e=document.createElement('button'); e.innerText='🗑️ Excluir'; e.onclick=()=>excluirArquivo(i); li.appendChild(e);} 
+  listaArquivos.appendChild(li);
+ });
+}
+
+function baixarArquivo(i){const a=document.createElement('a');a.href=arquivos[i].conteudo;a.download=arquivos[i].nome;a.click();}
+function excluirArquivo(i){if(confirm('Excluir?')){arquivos.splice(i,1);localStorage.setItem('arquivos',JSON.stringify(arquivos));atualizarArquivos();}}
+</script>
+</body>
+</html>
